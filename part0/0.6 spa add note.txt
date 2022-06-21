@@ -1,0 +1,23 @@
+note over browser: user clicks submit button
+
+note over browser:
+the form event handler from js
+prevents default submit handling
+end note
+
+note over browser: new note is created
+
+note over browser: note list is re-rendered
+
+note over browser: 
+new note is sent to server as json
+in the body of POST request
+end note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+server-side script adds
+new note to notes array
+end note
+
+server-->browser: HTTP 201 created
