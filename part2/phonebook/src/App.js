@@ -10,8 +10,6 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
 
-    const baseUrl = 'http://localhost:3001/persons'
-
     useEffect(() => {
         phonebookService
             .getAll()
@@ -36,6 +34,16 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
+                })
+        }
+    }
+
+    const deletePerson = (id, name) => {
+        if (window.confirm(`Delete ${name}?`)) {
+            phonebookService
+                .remove(id)
+                .then(() => {
+                    setPersons(persons.filter(person => person.id !== id))
                 })
         }
     }
@@ -65,7 +73,7 @@ const App = () => {
                 newNumber={newNumber}
                 handleNumberChange={handleNumberChange}/>
             <h2>Numbers</h2>
-            <Persons persons={personsToShow}/>
+            <Persons persons={personsToShow} deletePerson={deletePerson}/>
         </div>
     )
 }

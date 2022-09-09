@@ -1,5 +1,8 @@
-export const Person = ({ person }) => {
+export const Person = ({ person, deletePerson }) => {
     return (
-        <div>{person.name} {person.number}</div>
+        <div>
+            {person.name} {person.number}
+            <button onClick={deletePerson}>delete</button>
+        </div>
     );
 };
