@@ -10,9 +10,11 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
 
+    const baseUrl = 'http://localhost:3001/persons'
+
     useEffect(() => {
         axios
-            .get('http://localhost:3001/persons')
+            .get(baseUrl)
             .then(response => {
                 setPersons(response.data)
             })
@@ -28,9 +30,13 @@ const App = () => {
                 number: newNumber,
                 id: persons.length + 1,
             }
-            setPersons(persons.concat(personObject))
-            setNewName('')
-            setNewNumber('')
+            axios
+                .post(baseUrl, personObject)
+                .then(response => {
+                    setPersons(persons.concat(response.data))
+                    setNewName('')
+                    setNewNumber('')
+                })
         }
     }
 
