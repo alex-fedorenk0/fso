@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Filter } from "./components/Filter";
 import { Form } from "./components/Form";
 import { Persons } from "./components/Persons";
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -13,10 +13,10 @@ const App = () => {
     const baseUrl = 'http://localhost:3001/persons'
 
     useEffect(() => {
-        axios
-            .get(baseUrl)
-            .then(response => {
-                setPersons(response.data)
+        phonebookService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
             })
     }, [])
 
@@ -30,10 +30,10 @@ const App = () => {
                 number: newNumber,
                 id: persons.length + 1,
             }
-            axios
-                .post(baseUrl, personObject)
-                .then(response => {
-                    setPersons(persons.concat(response.data))
+            phonebookService
+                .create(personObject)
+                .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
                 })
