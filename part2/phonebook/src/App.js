@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import { Filter } from "./components/Filter";
 import { Form } from "./components/Form";
 import { Persons } from "./components/Persons";
+import { Notification } from "./components/Notification";
 import phonebookService from './services/phonebook'
+import './index.css'
 
 const App = () => {
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
+    const [errorMessage, setErrorMessage] = useState(null)
 
     useEffect(() => {
         phonebookService
@@ -44,6 +47,10 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
+                    setErrorMessage(`${returnedPerson.name} successfully added`)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
                 })
         }
     }
@@ -74,6 +81,7 @@ const App = () => {
 
     return (
         <div>
+            <Notification message={errorMessage}/>
             <h2>Phonebook</h2>
             <Filter value={newFilter} onChange={handleFilterChange}/>
             <h2>add a new</h2>
