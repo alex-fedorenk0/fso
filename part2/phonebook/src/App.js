@@ -67,6 +67,16 @@ const App = () => {
                 .then(() => {
                     setPersons(persons.filter(person => person.id !== id))
                 })
+                .catch(error => {
+                    setNotification({
+                        text: `Information of ${name} has already been removed from server`,
+                        type: 'error notification'
+                    })
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
+                    setPersons(persons.filter(person => person.id !== id))
+                })
         }
     }
 
