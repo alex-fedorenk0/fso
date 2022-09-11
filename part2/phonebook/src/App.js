@@ -11,7 +11,7 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
-    const [errorMessage, setErrorMessage] = useState(null)
+    const [notification, setNotification] = useState(null)
 
     useEffect(() => {
         phonebookService
@@ -30,7 +30,9 @@ const App = () => {
                 phonebookService
                     .update(personObject.id, personObject)
                     .then(returnedPerson => {
-                        setPersons(persons.map(person => person.id !== personObject.id ? person : returnedPerson))
+                        setPersons(persons.map(person => 
+                            person.id !== personObject.id 
+                            ? person : returnedPerson))
                         setNewName('')
                         setNewNumber('')
                     })
@@ -47,9 +49,12 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
-                    setErrorMessage(`${returnedPerson.name} successfully added`)
+                    setNotification({
+                        text: `${returnedPerson.name} successfully added`,
+                        type: 'success notification'
+                    })
                     setTimeout(() => {
-                        setErrorMessage(null)
+                        setNotification(null)
                     }, 5000)
                 })
         }
@@ -81,7 +86,7 @@ const App = () => {
 
     return (
         <div>
-            <Notification message={errorMessage}/>
+            <Notification message={notification}/>
             <h2>Phonebook</h2>
             <Filter value={newFilter} onChange={handleFilterChange}/>
             <h2>add a new</h2>

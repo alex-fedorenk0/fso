@@ -3,8 +3,8 @@ export const Notification = ({ message }) => {
         return null
     }
     return (
-        <div className="success notification">
-            { message }
+        <div className={message.type}>
+            { message.text }
         </div>
     )
 }
