@@ -32,6 +32,24 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+const getTimestamp = (request, response, next) => {
+  const timestamp = new Date()
+  console.log(timestamp)
+  console.log(timestamp.toString())
+  request.getTimestamp = timestamp.toString()
+
+  next()
+}
+
+app.use(getTimestamp)
+
+app.get('/info', (request, response) => {
+  response.setHeader('Content-Type', 'text/html; charset=utf-8');
+  response.write(`<p>Phonebook has info for ${persons.length} people</p>`)
+  response.write(`<p>${request.getTimestamp}</p>`)
+  response.end()
+})
+
 app.get('/', (request, response) => {
     response.send('<h1>Hello</h1>')
 })
