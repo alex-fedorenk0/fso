@@ -34,10 +34,9 @@ app.get('/api/persons', (request, response) => {
 
 const getTimestamp = (request, response, next) => {
   const timestamp = new Date()
-  console.log(timestamp)
-  console.log(timestamp.toString())
+  // console.log(timestamp)
+  // console.log(timestamp.toString())
   request.getTimestamp = timestamp.toString()
-
   next()
 }
 
@@ -81,10 +80,21 @@ const generateId = () => {
 app.post('/api/persons', (req, res) => {
   const body = req.body
 
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: "name or number missing"
+    })
+  }
+  if (persons.find(person => person.name === body.name)) {
+    return res.status(400).json({
+      error: "name must be unique"
+    })
+  }
+
   const new_person = {
-    'id': generateId(),
-    'name': body.name,
-    'number': body.number,
+    id: generateId(),
+    name: body.name,
+    number: body.number,
   }
 
   persons = persons.concat(new_person)
