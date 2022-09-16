@@ -70,6 +70,28 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
+const generateId = () => {
+  // const maxId = persons.length > 0 
+  // ? Math.max(...persons.map(n => n.id))
+  // : 0
+  // return maxId + 1
+  return Math.floor(Math.random() * 10000)
+}
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+
+  const new_person = {
+    'id': generateId(),
+    'name': body.name,
+    'number': body.number,
+  }
+
+  persons = persons.concat(new_person)
+  res.json(new_person)
+})
+
+
 const PORT = 3001
 
 app.listen(PORT, () => {
