@@ -50,6 +50,16 @@ app.get('/info', (request, response) => {
   response.end()
 })
 
+app.get('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    res.json(person)
+  } else {
+    res.status(204).end()
+  }
+})
+
 app.get('/', (request, response) => {
     response.send('<h1>Hello</h1>')
 })
