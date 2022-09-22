@@ -67,6 +67,19 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
+app.put('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const body = request.body
+  const index = persons.findIndex(person => person.id === id)
+  const newPerson = {
+    id: body.id,
+    name: body.name,
+    number: body.number
+  }
+  persons[index] = newPerson
+  response.json(newPerson)
+  })
+
 app.get('/', (request, response) => {
     response.send('<h1>Hello</h1>')
 })
