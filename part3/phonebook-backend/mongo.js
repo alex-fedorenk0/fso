@@ -11,16 +11,11 @@ const password = process.argv[2]
 const url = `mongodb+srv://fullstack:${password}@cluster0.qgfuncv.mongodb.net/phonebookApp?retryWrites=true&w=majority`
 
 const personSchema = new mongoose.Schema({
-    id: Number,
     name: String,
     number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
-
-const generateId = () => {
-    return Math.floor(Math.random() * 10000)
-}
 
 if (process.argv.length == 3) {
     mongoose.connect(url)
@@ -37,7 +32,6 @@ if (process.argv.length == 3) {
     .connect(url)
     .then((result) => {
             const newPerson = new Person({
-                id: generateId(),
                 name: process.argv[3],
                 number: process.argv[4],
             })
