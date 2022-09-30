@@ -56,10 +56,12 @@ app.use(getTimestamp)
 
 // info page
 app.get('/info', (request, response) => {
-  response.setHeader('Content-Type', 'text/html; charset=utf-8');
-  response.write(`<p>Phonebook has info for ${persons.length} people</p>`)
-  response.write(`<p>${request.getTimestamp}</p>`)
-  response.end()
+  Person.find({}).then(persons => {
+    response.setHeader('Content-Type', 'text/html; charset=utf-8');
+    response.write(`<p>Phonebook has info for ${persons.length} people</p>`)
+    response.write(`<p>${request.getTimestamp}</p>`)
+    response.end()
+  })  
 })
 
 // get person info by id
