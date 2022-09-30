@@ -72,18 +72,18 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 // update entry
-app.put('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
+app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-  const index = persons.findIndex(person => person.id === id)
-  const newPerson = {
-    id: body.id,
+  const person = {
     name: body.name,
     number: body.number
   }
-  persons[index] = newPerson
-  response.json(newPerson)
-  })
+  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
+})
 
 // delete record
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -103,16 +103,12 @@ app.post('/api/persons', (request, response) => {
       error: "name or number missing"
     })
   }
-  // if (persons.find(person => person.name === body.name)) {
-  //   return res.status(400).json({
-  //     error: "name must be unique"
-  //   })
-  // }
 
   const newPerson = new Person ({
     name: body.name,
     number: body.number,
   })
+
   newPerson.save().then(savedPerson => {
     response.json(savedPerson)
   })
