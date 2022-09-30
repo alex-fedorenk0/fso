@@ -12,6 +12,7 @@ const cors = require('cors')
 app.use(cors())
 
 const morgan = require('morgan')
+const { response } = require('express')
 morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
@@ -38,6 +39,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 //     }
 // ]
 
+// get all entries
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -52,6 +54,7 @@ const getTimestamp = (request, response, next) => {
 
 app.use(getTimestamp)
 
+// info page
 app.get('/info', (request, response) => {
   response.setHeader('Content-Type', 'text/html; charset=utf-8');
   response.write(`<p>Phonebook has info for ${persons.length} people</p>`)
@@ -59,7 +62,8 @@ app.get('/info', (request, response) => {
   response.end()
 })
 
-app.get('/api/persons/:id', (request, response) => {
+// get person info by id
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(person => {
       response.json(person)
@@ -67,15 +71,9 @@ app.get('/api/persons/:id', (request, response) => {
     .catch(error => {
       console.log(error)
     })
-  // const id = Number(req.params.id)
-  // const person = persons.find(person => person.id === id)
-  // if (person) {
-  //   res.json(person)
-  // } else {
-  //   res.status(204).end()
-  // }
 })
 
+// update entry
 app.put('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const body = request.body
@@ -89,16 +87,16 @@ app.put('/api/persons/:id', (request, response) => {
   response.json(newPerson)
   })
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
-  res.status(204).end()
+// delete record
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
-// const generateId = () => {
-//   return Math.floor(Math.random() * 10000)
-// }
-
+// new record
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
