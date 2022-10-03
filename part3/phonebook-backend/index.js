@@ -83,17 +83,26 @@ app.post('/api/persons', (request, response, next) => {
   //     error: "name or number missing"
   //   })
   // }
-
-  const newPerson = new Person ({
-    name: body.name,
-    number: body.number,
+  Person.countDocuments({ name: body.name })
+    .then(count => {
+      if (count > 0) {
+        return response.status(400).json({
+          error: 'name already exists'
+        })
+      } else {
+        const newPerson = new Person ({
+          name: body.name,
+          number: body.number,
+        })
+      
+        newPerson.save()
+          .then(savedPerson => {
+            response.json(savedPerson)
+          })
+          .catch(error => next(error))
+      }
   })
 
-  newPerson.save()
-    .then(savedPerson => {
-      response.json(savedPerson)
-    })
-    .catch(error => next(error))
 })
 
 // unknown endpoint middleware
