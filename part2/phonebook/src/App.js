@@ -36,6 +36,13 @@ const App = () => {
                         setNewName('')
                         setNewNumber('')
                     })
+                    .catch(error => {
+                        console.log(error.response.data.error)
+                        setNotification({
+                            text: `${error.response.data.error}`,
+                            type: 'error notification'
+                        })
+                    })
                 
             }
         } else {
@@ -56,6 +63,13 @@ const App = () => {
                     setTimeout(() => {
                         setNotification(null)
                     }, 5000)
+                })
+                .catch(error => {
+                    console.log(error.response.data.error)
+                    setNotification({
+                        text: `${error.response.data.error}`,
+                        type: 'error notification'
+                    })
                 })
         }
     }
