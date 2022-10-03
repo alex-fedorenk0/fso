@@ -78,31 +78,16 @@ app.delete('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
-  // if (!body.name || !body.number) {
-  //   return response.status(400).json({
-  //     error: "name or number missing"
-  //   })
-  // }
-  Person.countDocuments({ name: body.name })
-    .then(count => {
-      if (count > 0) {
-        return response.status(400).json({
-          error: 'name already exists'
-        })
-      } else {
-        const newPerson = new Person ({
-          name: body.name,
-          number: body.number,
-        })
-      
-        newPerson.save()
-          .then(savedPerson => {
-            response.json(savedPerson)
-          })
-          .catch(error => next(error))
-      }
+  const newPerson = new Person ({
+    name: body.name,
+    number: body.number,
   })
 
+  newPerson.save()
+    .then(savedPerson => {
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
 // unknown endpoint middleware
