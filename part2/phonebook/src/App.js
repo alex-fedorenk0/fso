@@ -42,6 +42,9 @@ const App = () => {
                             text: `${error.response.data.error}`,
                             type: 'error notification'
                         })
+                        setTimeout(() => {
+                            setNotification(null)
+                        }, 5000)
                     })
                 
             }
