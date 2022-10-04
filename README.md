@@ -5,5 +5,5 @@ Part 3
 exercise 3.10 phonebook backend
 https://powerful-sierra-74149.herokuapp.com/api/persons
 
-exercise 3.11 phonebook full stack
+exercise 3.21 phonebook full stack
 https://powerful-sierra-74149.herokuapp.com
